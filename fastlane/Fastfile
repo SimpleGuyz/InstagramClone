@@ -1,0 +1,68 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Description of what the lane does"
+  lane :custom_lane do
+    # add actions here: https://docs.fastlane.tools/actions
+  end
+end
+
+lane :diawii do
+  diawi(
+    token: "PAUrZyBPnDL40UeWKVBCNlmOjJvSR6Rno5H1btd57a",
+    file: "builds/stage.ipa"
+)
+end
+
+
+lane :ping do
+  slack(
+    message: "advanced ping to check. <https://firebase.google.com|firebase>",
+    slack_url: "https://hooks.slack.com/services/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",
+    channel: "#notifications",
+    use_webhook_configured_username_and_icon: true
+  )
+end
+
+def ping(message)
+  slack(
+    message: message, # <https://firebase.google.com|firebase>",
+    slack_url: "https://hooks.slack.com/services/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",
+    channel: "#notifications",
+    use_webhook_configured_username_and_icon: true
+  )
+end
+
+def pingError(message)
+  slack(
+    message: message, # <https://firebase.google.com|firebase>",
+    success: false,
+    slack_url: "https://hooks.slack.com/services/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",
+    channel: "#notifications",
+    use_webhook_configured_username_and_icon: true
+  )
+end
+
+
+lane :build do
+  begin
+      cocoapods
+  rescue => exception
+      on_error(exception)
+  end
+end
+
+def on_error(exception)
+  pingError(exception.message)
+end
