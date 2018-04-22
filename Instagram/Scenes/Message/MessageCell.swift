@@ -14,6 +14,8 @@ class MessageCell: UITableViewCell {
         label.numberOfLines = 0
         label.textColor = UIColor.darkGray
         label.font = Fonts.helveticaBold.of(16)
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
